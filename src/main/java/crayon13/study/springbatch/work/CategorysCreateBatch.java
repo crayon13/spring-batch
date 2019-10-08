@@ -1,5 +1,6 @@
 package crayon13.study.springbatch.work;
 
+import crayon13.study.springbatch.work.constant.Cluster;
 import crayon13.study.springbatch.work.service.CategorysIndexService;
 import crayon13.study.springbatch.work.util.JobCompletionNotificationListener;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -18,11 +20,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 //@ConditionalOnProperty(name = "job.name", havingValue = CategorysCreateBatch.JOB_NAME)
 @Slf4j
 @Configuration
+@ConditionalOnProperty(name = "job.name", havingValue = CategorysCreateBatch.JOB_NAME)
 @EnableScheduling
 @RequiredArgsConstructor
 public class CategorysCreateBatch {
     private int batchSize = 10000;
     static final String JOB_NAME = "CategorysCreateBatch";
+
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
@@ -38,7 +42,6 @@ public class CategorysCreateBatch {
         return jobBuilderFactory.get(JOB_NAME)
             .start(createCategorysStep())
             .next(bulkCategorysForCreateStep())
-            .listener(jobCompletionNotificationListener)
             .build();
     }
 

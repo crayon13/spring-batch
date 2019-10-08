@@ -1,1 +1,8 @@
 spring.batch.job.names: ${job.name:NONE}
+
+
+elasticsearch:
+  cluster:
+    cluster-1:
+      host: http://localhost
+      port: 9200

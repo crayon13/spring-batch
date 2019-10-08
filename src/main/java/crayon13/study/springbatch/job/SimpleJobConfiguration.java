@@ -1,6 +1,7 @@
 package crayon13.study.springbatch.job;
 
 
+import crayon13.study.springbatch.work.constant.Cluster;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -17,11 +18,15 @@ import org.springframework.context.annotation.Configuration;
 public class SimpleJobConfiguration {
     private final String jobName = "SimpleJobConfiguration";
     private final JobBuilderFactory jobBuilderFactory; // 생성자 DI 받음
-    private final StepBuilderFactory stepBuilderFactory; // 생성자 DI 받음
+    private final StepBuilderFactory stepBuilderFactory; // 생성자 DI
+
+    private final Cluster cluster = Cluster.CLUSTER_1;
 
     @Bean
     public Job simpleJob() {
         log.info(">>>>>>>>>>>>>>>>>>>>>>> {} start!!!!!!!!", jobName);
+
+        log.info(">>>>>>>>>>>>>>>>>>>>>>> cluster {} {} {}", cluster.getClusterName(), cluster.getHost(), cluster.getPort());
 
         return jobBuilderFactory.get(jobName)
             .start(simpleStep1())
